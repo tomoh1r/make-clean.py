@@ -27,4 +27,7 @@ setup(
             'make-clean = make_clean:main',
         ]
     },
+    extras_require = {
+        'test': ['pytest'],
+    }
 )
