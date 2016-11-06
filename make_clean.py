@@ -4,7 +4,7 @@ import argparse
 import shutil
 
 
-VERSION = (1, 0, 0)
+VERSION = (2, 0, 0)
 __version__ = '{0:d}.{1:d}.{2:d}'.format(*VERSION)
 
 
