@@ -18,7 +18,7 @@ exclude rm ``_build/html/.git``.
 Switch ``make.bat`` file clean to below::
 
   if "%1" == "clean" (
-  	.\path\to\make-clean.exe _build --excludes _build\html\.git _build\html\.gitignore
+  	.\path\to\make-clean.exe _build -i _build\html\.git _build\html\.gitignore
   	goto end
   )
 
