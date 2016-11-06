@@ -113,7 +113,7 @@ def main():
             make_clean(
                 args.target_dir,
                 args.clean_ignore,
-                args.ignore))
+                args.ignores))
 
     args = parser.parse_args()
     args.func(args)

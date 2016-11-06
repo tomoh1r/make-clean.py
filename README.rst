@@ -30,17 +30,21 @@ This package has a `make-clean` command.
 .. code-block:: bat
 
    > .\venv\Scripts\make-clean.exe -h
-   usage: make-clean [-h] [-e [EXCLUDE [EXCLUDE ...]]] TARGET_DIR
+   usage: make-clean-script.py [-h] [--clean-ignore CLEAN_IGNORE]
+                               [-i [IGNORE [IGNORE ...]]]
+                               TARGET_DIR [TARGET_DIR ...]
 
-   clean target dir without excludes
+   clean target dir without ignores
 
    positional arguments:
      TARGET_DIR            dir to remove recursively
 
    optional arguments:
      -h, --help            show this help message and exit
-     -e [EXCLUDE [EXCLUDE ...]], --excludes [EXCLUDE [EXCLUDE ...]]
-                           dir/file to exclude from remove
+     --clean-ignore CLEAN_IGNORE
+                           dir/file file to ignore from remove
+     -i [IGNORE [IGNORE ...]], --ignores [IGNORE [IGNORE ...]]
+                           dir/file to ignore from remove
 
 Test
 ====
