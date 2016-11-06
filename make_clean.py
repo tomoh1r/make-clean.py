@@ -10,7 +10,7 @@ VERSION = (1, 0, 0)
 __version__ = '{0:d}.{1:d}.{2:d}'.format(*VERSION)
 
 
-def make_clean(target_dir, ignore_fname=None, ignores=None):
+def make_clean(target_dirs, ignore_fname=None, ignores=None):
     '''clean target_dir except ignores relatively
 
     cleanup target directory except:
@@ -23,10 +23,10 @@ def make_clean(target_dir, ignore_fname=None, ignores=None):
     :param str target_dir: target directory to cleanup
     :param list ignores: not rm files or directories
     '''
-    target_dir = os.path.abspath(target_dir)
+    target_dirs = [os.path.abspath(x) for x in target_dirs]
     ignore_dirs, ignore_files = parse_ignores(ignore_fname, ignores)
-    rm_files(target_dir, ignore_dirs, ignore_files)
-    rm_dirs(target_dir, ignore_dirs)
+    rm_files(target_dirs, ignore_dirs, ignore_files)
+    rm_dirs(target_dirs, ignore_dirs)
 
 
 def parse_ignores(ignore_fname, ignore_patterns):
@@ -47,27 +47,29 @@ def parse_ignores(ignore_fname, ignore_patterns):
     return ignore_dirs, ignore_files
 
 
-def rm_files(target_dir, ignore_dirs, ignore_files):
+def rm_files(target_dirs, ignore_dirs, ignore_files):
     '''Remove files.'''
-    for root, _, files in os.walk(target_dir):
-        for f in files:
-            fullpath = os.path.join(root, f)
-            if (fullpath.startswith(ignore_dirs) or
-                    fullpath in ignore_files):
-                continue
-            os.remove(fullpath)
+    for dir_path in target_dirs:
+        for root, _, files in os.walk(dir_path):
+            for f in files:
+                fullpath = os.path.join(root, f)
+                if (fullpath.startswith(ignore_dirs) or
+                        fullpath in ignore_files):
+                    continue
+                os.remove(fullpath)
 
 
-def rm_dirs(target_dir, ignore_dirs):
+def rm_dirs(target_dirs, ignore_dirs):
     '''Remove empty directories.'''
     ignore_dir_set = set(ignore_dirs)
 
-    for root, _, _ in os.walk(target_dir):
-        if (not is_empty_dir(root) or
-                root in ignore_dir_set or
-                root == target_dir):
-            continue
-        shutil.rmtree(root)
+    for dir_path in target_dirs:
+        for root, _, _ in os.walk(dir_path):
+            if (not is_empty_dir(root) or
+                    root in ignore_dir_set or
+                    root in target_dirs):
+                continue
+            shutil.rmtree(root)
 
 
 def is_empty_dir(target_dir):
@@ -88,6 +90,7 @@ def main():
     parser.add_argument(
         'target_dir',
         metavar='TARGET_DIR',
+        nargs='+',
         help=u'dir to remove recursively ')
     parser.add_argument(
         '--clean-ignore',
