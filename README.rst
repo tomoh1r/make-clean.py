@@ -2,6 +2,9 @@
 make-clean
 ==========
 
+.. image:: https://travis-ci.org/jptomo/make-clean.py.svg?branch=master
+   :target: https://travis-ci.org/jptomo/make-clean.py
+
 If one'd like to make sphinx repository with github-pages sumodule, one shoud
 exclude rm ``_build/html/.git``.
 
