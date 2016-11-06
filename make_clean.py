@@ -37,11 +37,15 @@ def parse_ignores(ignore_fname, ignore_patterns):
                 for line in fp:
                     line = line.strip()
                     if not line.startswith('#'):
-                        ignores.append(
-                            os.path.abspath(line.replace('/', os.sep)))
+                        # lstrip / and replace / to os.sep
+                        line = line.lstrip('/').replace('/', os.sep)
+                        ignores.append(os.path.abspath(line))
 
     if ignore_patterns:
-        ignores.extend([os.path.abspath(x) for x in ignore_patterns if x])
+        # lstrip /
+        ignores.extend([os.path.abspath(x.lstrip('/')) for x in ignore_patterns if x])
+
+    print(ignores)
     ignore_dirs = tuple(x for x in ignores if x and os.path.isdir(x))
     ignore_files = {x for x in ignores if x and os.path.isfile(x)}
     return ignore_dirs, ignore_files

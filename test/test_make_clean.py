@@ -53,7 +53,15 @@ def test_remove_dir(monkeypatch, make_clean, tmp_dir,
     assert os.path.exists(target_dir) == is_exists
 
 
-def test_not_remove_exclude_file_from_file(monkeypatch, make_clean, tmp_dir):
+@pytest.mark.parametrize(
+        'prefix', [
+            # test for remove file
+            (''),
+            # test for starts with slash
+            ('/')
+        ])
+def test_not_remove_exclude_file_from_file(monkeypatch, make_clean, tmp_dir,
+                                           prefix):
     dir_name = os.path.basename(tmp_dir)
     monkeypatch.chdir(os.path.dirname(tmp_dir))
 
@@ -63,7 +71,7 @@ def test_not_remove_exclude_file_from_file(monkeypatch, make_clean, tmp_dir):
     open(target_file, 'w').close()
 
     with open('.cleanignore', 'w') as fp:
-        fp.write(dir_name + '/example/example.txt')
+        fp.write(prefix + dir_name + '/example/example.txt')
 
     assert os.path.exists(target_file)
     make_clean([dir_name], '.cleanignore')
