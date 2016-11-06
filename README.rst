@@ -4,6 +4,11 @@ make-clean
 
 .. image:: https://travis-ci.org/jptomo/make-clean.py.svg?branch=master
    :target: https://travis-ci.org/jptomo/make-clean.py
+   :alt: Travis CI Build Status
+
+.. image:: https://ci.appveyor.com/api/projects/status/ui4585dett58eu1r?branch=master&svg=true
+   :target: https://ci.appveyor.com/project/jptomo/make-clean-py
+   :alt: AppVeyor Build Status
 
 If one'd like to make sphinx repository with github-pages sumodule, one shoud
 exclude rm ``_build/html/.git``.
