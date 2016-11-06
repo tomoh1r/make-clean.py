@@ -53,6 +53,20 @@ def test_remove_dir(monkeypatch, make_clean, tmp_dir,
     assert os.path.exists(target_dir) == is_exists
 
 
+def test_donot_remove_dir_without_ossep_suffix(
+        monkeypatch, make_clean, tmp_dir):
+    dir_name = os.path.basename(tmp_dir)
+    monkeypatch.chdir(os.path.dirname(tmp_dir))
+
+    target_dir = os.path.join(tmp_dir, 'example')
+    os.mkdir(target_dir)
+
+    assert os.path.exists(target_dir)
+    make_clean([dir_name],
+               ignores=[os.path.join(dir_name, 'example')])
+    assert not os.path.exists(target_dir)
+
+
 @pytest.mark.parametrize(
         'prefix', [
             # test for remove file

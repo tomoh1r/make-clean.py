@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import, print_function
-
 import os
 import argparse
 import shutil
@@ -39,15 +37,16 @@ def parse_ignores(ignore_fname, ignore_patterns):
                     if not line.startswith('#'):
                         # lstrip / and replace / to os.sep
                         line = line.lstrip('/').replace('/', os.sep)
-                        ignores.append(os.path.abspath(line))
+                        ignores.append(line)
 
     if ignore_patterns:
         # lstrip /
-        ignores.extend([os.path.abspath(x.lstrip('/')) for x in ignore_patterns if x])
+        ignores.extend([x.lstrip('/') for x in ignore_patterns if x])
 
-    print(ignores)
-    ignore_dirs = tuple(x for x in ignores if x and os.path.isdir(x))
-    ignore_files = {x for x in ignores if x and os.path.isfile(x)}
+    ignore_dirs = tuple(os.path.abspath(x) for x in ignores
+                        if x and x.endswith(os.sep) and os.path.isdir(x))
+    ignore_files = {os.path.abspath(x) for x in ignores
+                    if x and os.path.isfile(x)}
     return ignore_dirs, ignore_files
 
 
