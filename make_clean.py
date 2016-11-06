@@ -23,14 +23,17 @@ def make_clean(target_dir, excludes):
     :param str target_dir: target directory to cleanup
     :param list excludes: not rm files or directories
     '''
-    target_dir = os.path.abspath(os.path.join(os.getcwd(), target_dir))
-    excludes = [os.path.abspath(os.path.join(os.getcwd(), x))
-                for x in excludes if x]
-    exclude_dirs = tuple(x for x in excludes if x and os.path.isdir(x))
-    exclude_files = {x for x in excludes if x and os.path.isfile(x)}
-
+    target_dir = os.path.abspath(target_dir)
+    exclude_dirs, exclude_files = parse_ignores(excludes)
     rm_files(target_dir, exclude_dirs, exclude_files)
     rm_dirs(target_dir, exclude_dirs)
+
+
+def parse_ignores(excludes):
+    excludes = [os.path.abspath(x) for x in excludes if x]
+    exclude_dirs = tuple(x for x in excludes if x and os.path.isdir(x))
+    exclude_files = {x for x in excludes if x and os.path.isfile(x)}
+    return exclude_dirs, exclude_files
 
 
 def rm_files(target_dir, exclude_dirs, exclude_files):
