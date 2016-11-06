@@ -10,7 +10,7 @@ VERSION = (1, 0, 0)
 __version__ = '{0:d}.{1:d}.{2:d}'.format(*VERSION)
 
 
-def make_clean(target_dir, excludes):
+def make_clean(target_dir, ignore_fname=None, excludes=None):
     '''clean target_dir except excludes relatively
 
     cleanup target directory except:
@@ -24,16 +24,26 @@ def make_clean(target_dir, excludes):
     :param list excludes: not rm files or directories
     '''
     target_dir = os.path.abspath(target_dir)
-    exclude_dirs, exclude_files = parse_ignores(excludes)
+    exclude_dirs, exclude_files = parse_ignores(ignore_fname, excludes)
     rm_files(target_dir, exclude_dirs, exclude_files)
     rm_dirs(target_dir, exclude_dirs)
 
 
-def parse_ignores(excludes):
-    excludes = [os.path.abspath(x) for x in excludes if x]
-    exclude_dirs = tuple(x for x in excludes if x and os.path.isdir(x))
-    exclude_files = {x for x in excludes if x and os.path.isfile(x)}
-    return exclude_dirs, exclude_files
+def parse_ignores(ignore_fname, ignore_patterns):
+    ignores = []
+    if ignore_fname:
+        if os.path.isfile(ignore_fname):
+            with open(ignore_fname) as fp:
+                for line in fp:
+                    line = line.strip()
+                    if not line.startswith('#'):
+                        ignores.append(os.path.abspath(line))
+
+    if ignore_patterns:
+        ignores.extend([os.path.abspath(x) for x in ignore_patterns if x])
+    ignore_dirs = tuple(x for x in ignores if x and os.path.isdir(x))
+    ignore_files = {x for x in ignores if x and os.path.isfile(x)}
+    return ignore_dirs, ignore_files
 
 
 def rm_files(target_dir, exclude_dirs, exclude_files):
@@ -79,6 +89,13 @@ def main():
         metavar='TARGET_DIR',
         help=u'dir to remove recursively ')
     parser.add_argument(
+        '--clean-ignore',
+        metavar='CLEAN_IGNORE',
+        help=u'dir/file file to ignore from remove',
+        nargs='1',
+        default='.cleanignore',
+        )
+    parser.add_argument(
         '-e', '--excludes',
         metavar='EXCLUDE',
         help=u'dir/file to exclude from remove',
@@ -86,7 +103,11 @@ def main():
         default=[],
         )
     parser.set_defaults(
-        func=lambda args: make_clean(args.target_dir, args.excludes))
+        func=lambda args:
+            make_clean(
+                args.target_dir,
+                args.clean_ignore,
+                args.excludes))
 
     args = parser.parse_args()
     args.func(args)
