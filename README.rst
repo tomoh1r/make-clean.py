@@ -2,9 +2,8 @@
 make-clean
 ==========
 
-.. image:: https://travis-ci.org/jptomo/make-clean.py.svg?branch=master
-   :target: https://travis-ci.org/jptomo/make-clean.py
-   :alt: Travis CI Build Status
+.. image:: https://github.com/tomoh1r/make-clean.py/workflows/test/badge.svg
+   :target: https://github.com/tomoh1r/make-clean.py/actions?query=workflow%3Atest
 
 .. image:: https://ci.appveyor.com/api/projects/status/ui4585dett58eu1r?branch=master&svg=true
    :target: https://ci.appveyor.com/project/jptomo/make-clean-py
