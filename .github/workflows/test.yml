@@ -23,12 +23,12 @@ jobs:
           restore-keys: make-clean.py-${{ runner.os }}-
       - uses: actions/setup-python@v2
         with:
-          python-version: ${{ matrix.python-version }}
-      - uses: tomoh1r/make-clean.py/.github/actions/test-it@master
+          python_version: ${{ matrix.python-version }}
+      - uses: tomoh1r/make-clean.py/.github/actions/test-it@issue-1-fix-actions
         if: "matrix.python-version != '2.7'"
         with:
-          python-version: ${{ matrix.python-version }}
-      - uses: tomoh1r/make-clean.py/.github/actions/pip-freeze@master
+          python_version: ${{ matrix.python-version }}
+      - uses: tomoh1r/make-clean.py/.github/actions/pip-freeze@issue-1-fix-actions
         if: "matrix.python-version != '2.7'"
         with:
-          python-version: ${{ matrix.python-version }}
+          python_version: ${{ matrix.python-version }}

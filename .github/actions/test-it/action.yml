@@ -2,7 +2,7 @@ name: 'Test it!'
 description: 'Test this repo.'
 
 inputs:
-  python-version:
+  python_version:
     required: true
 
 runs:
@@ -10,29 +10,34 @@ runs:
   steps:
     - name: Install virtualenv (Python 2.7).
       run: |
-        sudo apt update
-        sudo apt install -y virtualenv python-pip
+        if [[ "$INPUT_python_version" == "2.7" ]] ; then
+          sudo apt update
+          sudo apt install -y virtualenv python-pip
+        fi
       shell: bash
-      if: "input.python-version == '2.7'"
-    - name: Create venv (Python 2.7).
-      run: |
-        virtualenv -p python2.7 --clear venv
-      shell: bash
-      if: "input.python-version == '2.7'"
 
     - name: Create venv.
       run: |
-        python3 -m venv --clear venv
+        if [[ "$INPUT_python_version" == "2.7" ]] ; then
+          virtualenv -p python2.7 --clear venv
+        else
+          python3 -m venv --clear venv
+        fi
       shell: bash
-      if: "input.python-version != '2.7'"
 
     - name: Install dependencies
       run: |
-        ./venv/bin/python3 -m pip install -U setuptools pip
-        ./venv/bin/python3 -m pip install -e .[dev]
+        python_bin="python3"
+        [[ "$INPUT_python_version" == "2.7" ]] && python_bin="python"
+
+        ./venv/bin/${python_bin} -m pip install -U setuptools pip
+        ./venv/bin/${python_bin} -m pip install -e .[dev]
       shell: bash
 
     - name: Test with pytest
       run: |
-        ./venv/bin/python3 -m py.test -m "not linter"
+        python_bin="python3"
+        [[ "$INPUT_python_version" == "2.7" ]] && python_bin="python"
+
+        ./venv/bin/${python_bin} -m py.test -m "not linter"
       shell: bash

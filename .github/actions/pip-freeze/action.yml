@@ -1,14 +1,15 @@
 name: 'Generate pip freeze file.'
 
 inputs:
-  python-version:
+  python_version:
     required: true
 
 runs:
   using: "composite"
   steps:
     - run: |
-        python-bin="python3"
-        [[ "${{ python-version }}" == "2.7" ]] && python-bin="python"
-        ./venv/bin/${python-bin} -m pip freeze > requirements.txt
+        python_bin="python3"
+        [[ "$INPUT_python_version" == "2.7" ]] && python_bin="python"
+
+        ./venv/bin/${python_bin} -m pip freeze > requirements.txt
       shell: bash
