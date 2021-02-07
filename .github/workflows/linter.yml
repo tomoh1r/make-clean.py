@@ -21,4 +21,4 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: "3.9"
-      - uses: tomoh1r/make-clean.py/.github/actions/lint-it@master
+      - uses: tomoh1r/make-clean.py/.github/actions/lint-it@issue-1-fix-actions
