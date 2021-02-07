@@ -1,0 +1,38 @@
+name: 'Test it!'
+description: 'Test this repo.'
+
+inputs:
+  python-version:
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install virtualenv (Python 2.7).
+      run: |
+        sudo apt update
+        sudo apt install -y virtualenv python-pip
+      shell: bash
+      if: "input.python-version == '2.7'"
+    - name: Create venv (Python 2.7).
+      run: |
+        virtualenv -p python2.7 --clear venv
+      shell: bash
+      if: "input.python-version == '2.7'"
+
+    - name: Create venv.
+      run: |
+        python3 -m venv --clear venv
+      shell: bash
+      if: "input.python-version != '2.7'"
+
+    - name: Install dependencies
+      run: |
+        ./venv/bin/python3 -m pip install -U setuptools pip
+        ./venv/bin/python3 -m pip install -e .[dev]
+      shell: bash
+
+    - name: Test with pytest
+      run: |
+        ./venv/bin/python3 -m py.test -m "not linter"
+      shell: bash

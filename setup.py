@@ -28,7 +28,8 @@ setup(
         ]
     },
     extras_require = {
-        'test': ['pytest'],
-        'pypi': ['wheel'],
+        "test": ["pytest", "flake8"],
+        'dev:python_version>="3.6"': ["flake8", "black", "isort[pyproject]"],
+        'release': ['twine', 'wheel'],
     }
 )

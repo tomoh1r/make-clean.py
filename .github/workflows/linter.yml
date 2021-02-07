@@ -1,0 +1,24 @@
+name: linter
+
+on:
+  push:
+    branches: [ "*" ]
+  pull_request:
+    branches: [ "master" ]
+  schedule:
+    - cron: '15 6 * * *'
+
+jobs:
+  unittest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: make-clean.py-${{ runner.os }}-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: make-clean.py-${{ runner.os }}-
+      - uses: actions/setup-python@v2
+        with:
+          python-version: "3.9"
+      - uses: tomoh1r/make-clean.py/.github/actions/lint-it@master

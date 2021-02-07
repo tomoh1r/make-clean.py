@@ -1,0 +1,34 @@
+name: test
+
+on:
+  push:
+    branches: [ "*" ]
+  pull_request:
+    branches: [ "master" ]
+  schedule:
+    - cron: '30 6 * * *'
+
+jobs:
+  unittest:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["2.7", "3.5", "3.6", "3.7", "3.8", "3.9"]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: make-clean.py-${{ runner.os }}-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: make-clean.py-${{ runner.os }}-
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - uses: tomoh1r/make-clean.py/.github/actions/test-it@master
+        if: "matrix.python-version != '2.7'"
+        with:
+          python-version: ${{ matrix.python-version }}
+      - uses: tomoh1r/make-clean.py/.github/actions/pip-freeze@master
+        if: "matrix.python-version != '2.7'"
+        with:
+          python-version: ${{ matrix.python-version }}
