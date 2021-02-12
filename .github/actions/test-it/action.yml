@@ -1,3 +1,4 @@
+---
 name: 'Test it!'
 description: 'Test this repo.'
 
@@ -8,36 +9,22 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Install virtualenv (Python 2.7).
-      run: |
+    - run: |-
+        sudo apt update
         if [[ "$INPUT_python_version" == "2.7" ]] ; then
-          sudo apt update
+          _python_bin=~/.venv/bin/python
           sudo apt install -y virtualenv python-pip
-        fi
-      shell: bash
-
-    - name: Create venv.
-      run: |
-        if [[ "$INPUT_python_version" == "2.7" ]] ; then
-          virtualenv -p python2.7 --clear venv
+          virtualenv -p python2.7 \
+            --clear --no-setuptools --no-pip --no-wheel ~/.venv
         else
-          python3 -m venv --clear venv
+          _python_bin=~/.venv/bin/python3
+          sudo apt install -y python3-venv
+          python3 -m venv --clear ~/.venv
         fi
+
+        "$_python_bin" -m pip install -U setuptools pip
+        "$_python_bin" -m pip install -e .[dev]
+        "$_python_bin" -m py.test -m "not linter" \
+            --cov=./ --cov-report=xml:_reports/coverage-${INPUT_python_version}.xml
       shell: bash
-
-    - name: Install dependencies
-      run: |
-        python_bin="python3"
-        [[ "$INPUT_python_version" == "2.7" ]] && python_bin="python"
-
-        ./venv/bin/${python_bin} -m pip install -U setuptools pip
-        ./venv/bin/${python_bin} -m pip install -e .[dev]
-      shell: bash
-
-    - name: Test with pytest
-      run: |
-        python_bin="python3"
-        [[ "$INPUT_python_version" == "2.7" ]] && python_bin="python"
-
-        ./venv/bin/${python_bin} -m py.test -m "not linter"
-      shell: bash
+...

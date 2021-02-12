@@ -25,8 +25,8 @@ setup(
     license="MIT License",
     entry_points={"console_scripts": ["make-clean = make_clean:main"]},
     extras_require={
-        "dev": ["setuptools", "pytest"],
-        'dev:python_version>="3.6"': ["flake8", "black", "isort[pyproject]"],
+        "dev": ["setuptools", "pytest", "pytest-cov"],
+        'dev:python_version>="3.6"': ["flake8", "black", "isort[pyproject]", "pylint"],
         "release": ["twine", "wheel"],
     },
 )

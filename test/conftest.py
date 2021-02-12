@@ -34,6 +34,11 @@ def root_path():
     return os.path.dirname(_here)
 
 
+@pytest.fixture()
+def chdir_root_path(monkeypatch, root_path):
+    monkeypatch.chdir(root_path)
+
+
 @pytest.fixture(scope="module")
 def make_clean():
     from make_clean import make_clean

@@ -1,3 +1,4 @@
+---
 name: License Scanning
 
 on:
@@ -12,7 +13,26 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: make-clean.py-${{ runner.os }}-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: make-clean.py-${{ runner.os }}-
+      - uses: actions/setup-python@v2
+        with:
+          python_version: "3.9"
+      - name: Create requirements.txt
+        run: |
+          python3 -m pip install --user -U setuptools pip
+          python3 -m pip install --user -e .[dev]
+          python3 -m pip freeze > requirements.txt
+
       - name: Run FOSSA scan and upload build data
         uses: fossa-contrib/fossa-action@v1
         with:
           fossa-api-key: ${{ secrets.FOSSA_API_KEY }}
+          skip-test: true
+          # FIXME: to be specified by branches.
+          #skip-test: false
+...
