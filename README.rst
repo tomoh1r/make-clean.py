@@ -1,5 +1,3 @@
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftomoh1r%2Fmake-clean.py.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Ftomoh1r%2Fmake-clean.py?ref=badge_shield)
-
 ==========
 make-clean
 ==========
@@ -10,6 +8,10 @@ make-clean
 .. image:: https://ci.appveyor.com/api/projects/status/ui4585dett58eu1r?branch=master&svg=true
    :target: https://ci.appveyor.com/project/jptomo/make-clean-py
    :alt: AppVeyor Build Status
+
+.. image:: https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftomoh1r%2Fmake-clean.py.svg?type=shield
+   :target: https://app.fossa.com/projects/git%2Bgithub.com%2Ftomoh1r%2Fmake-clean.py?ref=badge_shield
+   :alt: FOSSA Status
 
 If one'd like to make sphinx repository with github-pages sumodule, one shoud
 exclude rm ``_build/html/.git``.
@@ -59,5 +61,9 @@ I use `pytest <http://doc.pytest.org/en/latest/>`__.
    > .\venv\Scripts\python.exe -m pytest
 
 
-## License
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftomoh1r%2Fmake-clean.py.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Ftomoh1r%2Fmake-clean.py?ref=badge_large)
+License
+=======
+
+.. image:: https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftomoh1r%2Fmake-clean.py.svg?type=large
+   :target: https://app.fossa.com/projects/git%2Bgithub.com%2Ftomoh1r%2Fmake-clean.py?ref=badge_large
+   :alt: FOSSA Status Details
