@@ -6,7 +6,7 @@ def _readme():
     import os
 
     here = os.path.dirname(os.path.abspath(__file__))
-    return open(os.path.join(here, "README.rst")).read()
+    return open(os.path.join(here, "README.md")).read()
 
 
 setup(
@@ -17,6 +17,7 @@ setup(
     url="https://github.com/jptomo/make-clean.py",
     description="A Cleanup Utility",
     long_description=_readme(),
+    long_description_content_type="text/markdown",
     py_modules=["make_clean"],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
