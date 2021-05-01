@@ -25,6 +25,6 @@ runs:
         "$_python_bin" -m pip install -U setuptools pip
         "$_python_bin" -m pip install -e .[dev]
         "$_python_bin" -m py.test -m "not linter" \
-            --cov=./ --cov-report=xml:_reports/coverage-${INPUT_python_version}.xml
+            --cov=./ --cov-report="xml:_reports/coverage-${INPUT_python_version}.xml"
       shell: bash
 ...
