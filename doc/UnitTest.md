@@ -1,6 +1,6 @@
 # UnitTest
 
-I use `pytest <http://doc.pytest.org/en/latest/>`__.
+I use [pytest](http://doc.pytest.org/en/latest/).
 
 Setup.
 
