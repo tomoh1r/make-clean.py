@@ -7,12 +7,16 @@ runs:
   steps:
     - name: Install dependencies
       run: |
-        python3 -m pip install --user -U setuptools pip
-        python3 -m pip install --user -e .[dev]
+        sudo apt-get install -y python3-venv
+        pushd $HOME
+          python3 -m venv --clear .venv_linter
+        popd
+        $HOME/.venv_linter/bin/python3 -m pip install -U setuptools pip
+        $HOME/.venv_linter/bin/python3 -m pip install -e .[dev]
       shell: bash
 
     - name: Test with pytest
       run: |
-        python3 -m py.test -m "linter" --lint-code
+        $HOME/.venv_linter/bin/python3 -m py.test -m "linter" --lint-code
       shell: bash
 ...
