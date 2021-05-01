@@ -41,16 +41,6 @@ optional arguments:
                         dir/file to ignore from remove
 ```
 
-## Test
-
-I use `pytest <http://doc.pytest.org/en/latest/>`__.
-
-```bat
-> C:\path\to\python\3.X.Y\python.exe -m venv --clear venv
-> .\venv\Scripts\python.exe setup.py develop easy_install make-clean[test]
-> .\venv\Scripts\python.exe -m pytest
-```
-
 ## License
 
 [![FOSSA Status Details](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftomoh1r%2Fmake-clean.py.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Ftomoh1r%2Fmake-clean.py?ref=badge_large)
