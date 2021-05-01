@@ -1,0 +1,49 @@
+---
+name: 'Test it!'
+description: 'Test this repo.'
+
+inputs:
+  python-bin:
+    required: true
+  python-version:
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup test env.
+      run: |-
+        my_venv_bin="$HOME/.venv${{inputs.python-version}}/bin/${{inputs.python-bin}}"
+        sudo apt-get update -y
+        if [[ "${{inputs.python-version}}" == "2.7" ]] ; then
+          sudo apt-get install -y python-pip-whl
+          python2.7 -m pip install --user -U setuptools pip
+          python2.7 -m pip install --user -U virtualenv
+          pushd $HOME
+            # Initialy, pip on virtualenv do not have six.
+            $HOME/.local/bin/virtualenv -p python2.7 --clear --no-wheel .venv2.7
+          popd
+        else
+          sudo apt-get install -y python3-venv
+          pushd $HOME
+            python${{inputs.python-version}} -m venv --clear .venv${{inputs.python-version}}
+          popd
+        fi
+        "$my_venv_bin" -m pip install -U setuptools pip
+        "$my_venv_bin" -m pip install -e .[dev]
+      shell: bash
+
+    - name: Test it.
+      run: |-
+        $HOME/.venv${{inputs.python-version}}/bin/${{inputs.python-bin}} \
+            -m py.test -m "not linter" \
+            --cov=./ \
+            --cov-report="xml:_reports/coverage-${INPUT_python_version}.xml"
+      shell: bash
+
+    - name: Output requirements.txt for caching.
+      run: |-
+        $HOME/.venv${{inputs.python-version}}/bin/${{inputs.python-bin}} \
+            -m pip freeze > requirements.txt
+      shell: bash
+...

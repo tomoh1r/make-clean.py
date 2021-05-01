@@ -1,0 +1,52 @@
+---
+name: 'Test it! Win'
+description: 'Test this repo.'
+
+inputs:
+  python-version:
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup test env.
+      run: |-
+        # Search Python exe
+        foreach($dir in $(gci "$Env:RUNNER_TOOL_CACHE\Python"))
+        {
+          if ($dir.Name.StartsWith("${{inputs.python-version}}"))
+          {
+            $local:my_py_long_ver = $dir.Name
+            break
+          }
+        }
+        $local:my_py_bin = "${Env:RUNNER_TOOL_CACHE}\Python\${my_py_long_ver}\x64\python.exe"
+
+        # Setup Python env
+        if ("${{inputs.python-version}}" -eq "2.7") {
+          & "$my_py_bin" -m pip install --user -U setuptools pip
+          & "$my_py_bin" -m pip install --user -U virtualenv
+
+          Push-Location -Path $HOME
+            & "${Env:APPDATA}\Python\Scripts\virtualenv.exe" --clear --no-wheel ".venv2.7"
+          Pop-Location
+        }
+        else {
+          Push-Location -Path $HOME
+            & "$my_py_bin" -m venv --clear ".venv${{inputs.python-version}}"
+          Pop-Location
+        }
+
+        # Setup Python deps
+        $local:my_venv_bin = "$HOME\.venv${{inputs.python-version}}\Scripts\python.exe"
+        & "$my_venv_bin" -m pip install -U setuptools pip
+        & "$my_venv_bin" -m pip install -e .[dev]
+
+        # Test it
+        $local:my_cov_report = "xml:_reports\coverage-${{inputs.python-version}}.xml"
+        & "$my_venv_bin" -m py.test -m "not linter" --cov=./ --cov-report="$my_cov_report"
+
+        # Output req.txt
+        & "$my_venv_bin" -m pip freeze > requirements.txt
+      shell: pwsh
+...

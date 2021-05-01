@@ -26,7 +26,8 @@ jobs:
 
       - name: Create requirements.txt
         run: |
-          sudo apt install -y python3-venv
+          sudo apt-get update -y
+          sudo apt-get install -y python3-venv
           python3 -m venv --clear ~/.venv
           ~/.venv/bin/python3 -m pip install -U setuptools pip
           ~/.venv/bin/python3 -m pip install -e .
