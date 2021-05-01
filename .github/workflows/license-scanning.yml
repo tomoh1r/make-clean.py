@@ -3,7 +3,7 @@ name: License Scanning
 
 on:
   push:
-    branches: [ "*" ]
+    branches: [ "master" ]
   pull_request_target:
     branches: [ "master" ]
 
@@ -19,20 +19,22 @@ jobs:
           path: ~/.cache/pip
           key: make-clean.py-${{ runner.os }}-${{ hashFiles('**/requirements.txt') }}
           restore-keys: make-clean.py-${{ runner.os }}-
+
       - uses: actions/setup-python@v2
         with:
-          python_version: "3.9"
+          python-version: "3.9"
+
       - name: Create requirements.txt
         run: |
-          python3 -m pip install --user -U setuptools pip
-          python3 -m pip install --user -e .[dev]
-          python3 -m pip freeze > requirements.txt
+          sudo apt install -y python3-venv
+          python3 -m venv --clear ~/.venv
+          ~/.venv/bin/python3 -m pip install -U setuptools pip
+          ~/.venv/bin/python3 -m pip install -e .
+          ~/.venv/bin/python3 -m pip freeze > requirements.txt
 
       - name: Run FOSSA scan and upload build data
         uses: fossa-contrib/fossa-action@v1
         with:
           fossa-api-key: ${{ secrets.FOSSA_API_KEY }}
-          skip-test: true
-          # FIXME: to be specified by branches.
-          #skip-test: false
+          skip-test: false
 ...
