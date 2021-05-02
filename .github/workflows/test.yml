@@ -30,15 +30,7 @@ jobs:
     strategy:
       matrix:
         os: ["ubuntu-latest", "windows-latest"]
-        python-bin: ["python3"]
-        python-version: ["3.5", "3.6", "3.7", "3.8", "3.9"]
-        include:
-          - os: "ubuntu-latest"
-            python-bin: "python"
-            python-version: "2.7"
-          - os: "windows-latest"
-            python-bin: "python"
-            python-version: "2.7"
+        python-version: ["2.7", "3.5", "3.6", "3.7", "3.8", "3.9"]
     steps:
       - uses: actions/checkout@v2
 
@@ -61,7 +53,6 @@ jobs:
 
       - uses: ./.github/actions/test-it-linux
         with:
-          python-bin: ${{ matrix.python-bin }}
           python-version: ${{ matrix.python-version }}
         if: runner.os == 'Linux'
       - uses: ./.github/actions/test-it-win
