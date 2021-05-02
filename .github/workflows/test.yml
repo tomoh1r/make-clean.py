@@ -25,22 +25,35 @@ jobs:
           python-version: "3.9"
       - uses: ./.github/actions/lint-it
 
-  unittest-linux:
-    runs-on: ubuntu-latest
+  unittest:
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
+        os: ["ubuntu-latest", "windows-latest"]
         python-bin: ["python3"]
         python-version: ["3.5", "3.6", "3.7", "3.8", "3.9"]
         include:
-          - python-bin: "python"
+          - os: "ubuntu-latest"
+            python-bin: "python"
+            python-version: "2.7"
+          - os: "windows-latest"
+            python-bin: "python"
             python-version: "2.7"
     steps:
       - uses: actions/checkout@v2
+
       - uses: actions/cache@v2
         with:
           path: ~/.cache/pip
           key: make-clean.py-${{ runner.os }}-${{ hashFiles('**/requirements.txt') }}
           restore-keys: make-clean.py-${{ runner.os }}-
+        if: runner.os == 'Linux'
+      - uses: actions/cache@v2
+        with:
+          path: ~\AppData\Local\pip\Cache
+          key: make-clean.py-${{ runner.os }}-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: make-clean.py-${{ runner.os }}-
+        if: runner.os == 'Windows'
 
       - uses: actions/setup-python@v2
         with:
@@ -50,39 +63,11 @@ jobs:
         with:
           python-bin: ${{ matrix.python-bin }}
           python-version: ${{ matrix.python-version }}
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          directory: _reports/
-          flags: unittests
-          env_vars: OS,PYTHON
-          name: codecov-umbrella
-          fail_ci_if_error: true
-          path_to_write_report: ./coverage/codecov_report.txt
-          verbose: true
-
-  unittest-win:
-    runs-on: windows-latest
-    strategy:
-      matrix:
-        python-version: ["2.7", "3.5", "3.6", "3.7", "3.8", "3.9"]
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/cache@v2
-        with:
-          path: ~\AppData\Local\pip\Cache
-          key: make-clean.py-${{ runner.os }}-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: make-clean.py-${{ runner.os }}-
-
-      - uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
-
+        if: runner.os == 'Linux'
       - uses: ./.github/actions/test-it-win
         with:
           python-version: ${{ matrix.python-version }}
+        if: runner.os == 'Windows'
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
