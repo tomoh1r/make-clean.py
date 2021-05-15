@@ -1,6 +1,6 @@
 # make-clean
 
-Make clean your files. [![Test result badge.](https://github.com/tomoh1r/make-clean.py/workflows/test/badge.svg)](https://github.com/tomoh1r/make-clean.py/actions?query=workflow%3Atest) [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftomoh1r%2Fmake-clean.py.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Ftomoh1r%2Fmake-clean.py?ref=badge_shield)
+Make clean your files. [![Test result badge.](https://github.com/tomoh1r/make-clean.py/workflows/test/badge.svg)](https://github.com/tomoh1r/make-clean.py/actions?query=workflow%3Atest)
 
 ---
 
@@ -40,7 +40,3 @@ optional arguments:
   -i [IGNORE [IGNORE ...]], --ignores [IGNORE [IGNORE ...]]
                         dir/file to ignore from remove
 ```
-
-## License
-
-[![FOSSA Status Details](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftomoh1r%2Fmake-clean.py.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Ftomoh1r%2Fmake-clean.py?ref=badge_large)
