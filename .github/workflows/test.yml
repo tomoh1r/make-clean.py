@@ -60,6 +60,11 @@ jobs:
           python-version: ${{ matrix.python-version }}
         if: runner.os == 'Windows'
 
+      - uses: actions/upload-artifact@v2
+        with:
+          name: test-result
+          path: _reports/
+
       #- name: Upload coverage to Codecov
       #  uses: codecov/codecov-action@v1
       #  with:
