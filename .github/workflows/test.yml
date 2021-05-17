@@ -4,7 +4,7 @@ name: test
 on:
   push:
     branches: [ "*" ]
-  pull_request_target:
+  pull_request:
     branches: [ "master" ]
   schedule:
     - cron: '30 6 * * *'
@@ -60,15 +60,15 @@ jobs:
           python-version: ${{ matrix.python-version }}
         if: runner.os == 'Windows'
 
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          directory: _reports/
-          flags: unittests
-          env_vars: OS,PYTHON
-          name: codecov-umbrella
-          fail_ci_if_error: true
-          path_to_write_report: ./coverage/codecov_report.txt
-          verbose: true
+      #- name: Upload coverage to Codecov
+      #  uses: codecov/codecov-action@v1
+      #  with:
+      #    token: ${{ secrets.CODECOV_TOKEN }}
+      #    directory: _reports/
+      #    flags: unittests
+      #    env_vars: OS,PYTHON
+      #    name: codecov-umbrella
+      #    fail_ci_if_error: true
+      #    path_to_write_report: ./coverage/codecov_report.txt
+      #    verbose: true
 ...
